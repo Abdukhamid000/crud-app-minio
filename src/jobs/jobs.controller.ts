@@ -1,8 +1,9 @@
-import { Controller, DefaultValuePipe, Get, Post, Query } from '@nestjs/common';
-import { JobsService } from './jobs.service.js';
-import { PositiveIntPipe } from '../common/positive-int.pipe.js';
+import { Controller, Get, Query } from '@nestjs/common';
+import { ApiTags } from '@nestjs/swagger';
 import { FindJobsDto } from './find-jobs.dto.js';
+import { JobsService } from './jobs.service.js';
 
+@ApiTags('jobs')
 @Controller('jobs')
 export class JobsController {
   constructor(private jobsService: JobsService) {}

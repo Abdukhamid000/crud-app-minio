@@ -3,13 +3,14 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
-import { CreateCompanyDto } from './dto/create-company.dto.js';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Company } from './companies.entity.js';
 import { Repository } from 'typeorm';
 import { isUniqueViolation } from '../common/db-errors.js';
-import { CreateJobPostingDto } from './dto/create-company-job.dto.js';
+import { PaginationDto } from '../common/pagination.dto.js';
 import { JobsService } from '../jobs/jobs.service.js';
+import { Company } from './companies.entity.js';
+import { CreateJobPostingDto } from './dto/create-company-job.dto.js';
+import { CreateCompanyDto } from './dto/create-company.dto.js';
 
 @Injectable()
 export class CompaniesService {
@@ -31,10 +32,17 @@ export class CompaniesService {
     }
   }
 
-  async findAllJobsByCompanyId(id: number, page: number, limit: number) {
+  findAll() {
+    return this.companyRepo.find();
+  }
+
+  async findAllJobsByCompanyId(
+    id: number,
+    { page = 1, limit = 10 }: PaginationDto,
+  ) {
     const exists = await this.companyRepo.existsBy({ id });
     if (!exists) throw new NotFoundException('Company not found');
-    return this.jobService.findAllByCompanyId(id, page, limit);
+    return this.jobService.findAllByCompanyId(id, { page, limit });
   }
 
   createJobForCompany(id: number, dto: CreateJobPostingDto) {

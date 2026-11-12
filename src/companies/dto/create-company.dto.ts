@@ -1,4 +1,4 @@
-import { IsString, Matches, IsOptional } from 'class-validator';
+import { IsOptional, IsString, Matches } from 'class-validator';
 
 export class CreateCompanyDto {
   @IsString()

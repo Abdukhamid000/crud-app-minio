@@ -1,13 +1,12 @@
 // dto/find-jobs.dto.ts
-import { Type } from 'class-transformer';
+import { Transform, Type } from 'class-transformer';
 import {
   IsArray,
   IsInt,
   IsOptional,
   IsString,
-  Min,
   Max,
-  ArrayNotEmpty,
+  Min,
 } from 'class-validator';
 
 export class FindJobsDto {
@@ -25,6 +24,9 @@ export class FindJobsDto {
   limit: number = 20; // default
 
   @IsOptional()
+  @Transform(({ value }) => {
+    return typeof value === 'string' ? [value] : value;
+  })
   @IsArray()
   @IsString({ each: true })
   categories?: string[];

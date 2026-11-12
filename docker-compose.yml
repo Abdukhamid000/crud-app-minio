@@ -1,16 +1,4 @@
 services:
-  app:
-    build: .
-    restart: unless-stopped
-    ports:
-      - '8080:8080'
-    env_file:
-      - .env
-    depends_on:
-      postgres:
-        condition: service_healthy
-      minio:
-        condition: service_started
   postgres:
     image: postgres:16
     restart: unless-stopped
